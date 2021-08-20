@@ -18,9 +18,10 @@ public class Player extends BaseObject {
         this.idCurrBitmap = 0;
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas, boolean Pause){
 
-        canvas.drawBitmap(this.getBm(), this.x, this.y, null);
+
+        canvas.drawBitmap(this.getBm(Pause), this.x, this.y, null);
     }
 
     public ArrayList<Bitmap> getArrBms() {
@@ -35,9 +36,11 @@ public class Player extends BaseObject {
         }
     }
 
-    @Override
-    public Bitmap getBm() {
+    public Bitmap getBm(boolean Pause) {
+
+        if(!Pause)
         count++;
+
         if(this.count == vFlap)
         {
             for(int i = 0; i < arrBms.size(); i++)
@@ -54,5 +57,19 @@ public class Player extends BaseObject {
             this.count = 0;
         }
         return this.getArrBms().get(idCurrBitmap);
+    }
+
+    @Override
+    public void setY(float y) {
+
+        if(y + this.height < Constants.SCREEN_HEIGHT)
+        this.y = y;
+    }
+
+    @Override
+    public void setX(float x) {
+
+        if(x + this.width < Constants.SCREEN_WIDTH)
+        this.x = x;
     }
 }

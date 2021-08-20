@@ -12,8 +12,10 @@ public class Obstacle extends BaseObject{
         speed = 10*Constants.SCREEN_WIDTH/1080;
     }
 
-    public void draw(Canvas canvas){
-        this.y -= speed;
+    public void draw(Canvas canvas, boolean Pause){
+        if(!Pause)
+        this.y += speed;
+
         canvas.drawBitmap(this.bm, this.x, this.y, null);
     }
 
