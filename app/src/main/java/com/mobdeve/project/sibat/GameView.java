@@ -2,6 +2,7 @@ package com.mobdeve.project.sibat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,14 +22,16 @@ import java.util.Random;
 public class GameView extends View {
 
     private Player player;
-    private Handler  handler;
-    private Runnable r;
+    private Handler  handler, handler2;
+    private Runnable r, scoreincrement;
     private int numObstacles;
     private ArrayList<Obstacle> arrObstacle;
-    private boolean Pause;
-    private TextView pauseScreen;
+    private boolean Pause, Gameover;
+    public static int score;
+    private int speedCap;
 
     float positions[]; //Array of possible positions
+
 
     Random rand = new Random(); //Random variable to generate a random number from 0 - 3
 
@@ -39,15 +42,28 @@ public class GameView extends View {
         initPlayer();
         initObstacle();
         handler = new Handler();
+        handler2 = new Handler();
+
         r = new Runnable() {
             @Override
             public void run() {
+                if(!Gameover)
                 invalidate();
             }
         };
 
-        Pause = true;
+        scoreincrement = new Runnable() {
+            @Override
+            public void run() {
+                GameView.score += 10;
+                Constants.SCOREVIEW.setText(String.valueOf(score));
+            }
+        };
 
+        Pause = true;
+        Gameover = false;
+        this.score = 0;
+        speedCap = 500;
     }
 
     private void initObstacle() {
@@ -96,14 +112,44 @@ public class GameView extends View {
 
         for(int i = 1; i < numObstacles+1; i++)
         {
+            if(player.getRect().intersect(arrObstacle.get(i-1).getRect()))
+                Gameover = true;
             //Reset obstacle position
             if(arrObstacle.get(i-1).getY() > Constants.SCREEN_HEIGHT) {
                 arrObstacle.get(i-1).setX(positions[rand.nextInt(4)]);
                 arrObstacle.get(i-1).setY(-500);
+                handler2.postDelayed(scoreincrement, 100);
             }
+
+            if(score > speedCap) {
+                arrObstacle.get(i - 1).speedUp();
+                speedCap *= 2;
+            }
+
             arrObstacle.get(i-1).draw(canvas, Pause);
         }
 
+        if(Gameover)
+        {
+            Constants.PAUSEVIEW.setText("GAME OVER");
+            Constants.PAUSEVIEW.setTextColor(Color.RED);
+            Constants.PAUSEVIEW.setTextSize(50);
+
+            Constants.SCOREVIEW.setVisibility(View.GONE);
+            Constants.SCORETEXT.setVisibility(View.GONE);
+
+            Constants.INSTRUCTIONS.setText("FINAL SCORE: " + String.valueOf(score));
+            Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
+            Constants.HIGHSCORETEXT.setVisibility(View.VISIBLE);
+            Constants.HIGHSCORETEXT.setText("HIGH SCORE: " + Constants.HIGHSCORE);
+
+            if(score > Constants.HIGHSCORE) {
+                Constants.EDITOR.putInt("HighScore", score);
+                Constants.EDITOR.apply();
+                Constants.HIGHSCORETEXT.setText("You have beaten your high score!");
+            }
+
+        }
 
         handler.postDelayed(r, 10);
     }
@@ -122,6 +168,7 @@ public class GameView extends View {
 
                     Pause = false;
                     Constants.PAUSEVIEW.setVisibility(View.GONE);
+                    Constants.INSTRUCTIONS.setVisibility(View.GONE);
                 }
 
                 return true;
@@ -139,18 +186,13 @@ public class GameView extends View {
                 Pause = true;
                 //Show pause screen
                 Constants.PAUSEVIEW.setVisibility(View.VISIBLE);
+                Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
                 break;
 
             default:
                 return false;
         }
 
-
-       /* if(!Pause)
-            Constants.PAUSEVIEW.setVisibility(View.GONE);
-
-        else
-            Constants.PAUSEVIEW.setVisibility(View.VISIBLE);*/
 
         return super.onTouchEvent(event);
     }

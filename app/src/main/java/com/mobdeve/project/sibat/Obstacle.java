@@ -9,7 +9,7 @@ public class Obstacle extends BaseObject{
 
     public Obstacle(float x, float y, int width, int height) {
         super(x, y, width, height);
-        speed = 10*Constants.SCREEN_WIDTH/1080;
+        speed = 5*Constants.SCREEN_WIDTH/1080;
     }
 
     public void draw(Canvas canvas, boolean Pause){
@@ -22,5 +22,9 @@ public class Obstacle extends BaseObject{
     @Override
     public void setBm(Bitmap bm){
         this.bm = Bitmap.createScaledBitmap(bm,  width, height, true);
+    }
+
+    public void speedUp() {
+        speed = speed*2;
     }
 }
