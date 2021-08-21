@@ -47,7 +47,6 @@ public class GameView extends View {
         r = new Runnable() {
             @Override
             public void run() {
-                if(!Gameover)
                 invalidate();
             }
         };
@@ -108,50 +107,74 @@ public class GameView extends View {
 
     public void draw(Canvas canvas){
         super.draw(canvas);
-        player.draw(canvas, Pause);
+        if(!Gameover) {
+            player.draw(canvas, Pause);
 
-        for(int i = 1; i < numObstacles+1; i++)
-        {
-            if(player.getRect().intersect(arrObstacle.get(i-1).getRect()))
-                Gameover = true;
-            //Reset obstacle position
-            if(arrObstacle.get(i-1).getY() > Constants.SCREEN_HEIGHT) {
-                arrObstacle.get(i-1).setX(positions[rand.nextInt(4)]);
-                arrObstacle.get(i-1).setY(-500);
-                handler2.postDelayed(scoreincrement, 100);
+            for (int i = 1; i < numObstacles + 1; i++) {
+                if (player.getRect().intersect(arrObstacle.get(i - 1).getRect()))
+                    Gameover = true;
+                //Reset obstacle position
+                if (arrObstacle.get(i - 1).getY() > Constants.SCREEN_HEIGHT) {
+                    arrObstacle.get(i - 1).setX(positions[rand.nextInt(4)]);
+                    arrObstacle.get(i - 1).setY(-500);
+                    handler2.postDelayed(scoreincrement, 100);
+                }
+
+                if (score > speedCap) {
+                    arrObstacle.get(i - 1).speedUp();
+                    speedCap *= 2;
+                }
+
+                arrObstacle.get(i - 1).draw(canvas, Pause);
             }
 
-            if(score > speedCap) {
-                arrObstacle.get(i - 1).speedUp();
-                speedCap *= 2;
-            }
+            if (Gameover) {
+                Constants.PAUSEVIEW.setText("GAME OVER");
+                Constants.PAUSEVIEW.setTextColor(Color.RED);
 
-            arrObstacle.get(i-1).draw(canvas, Pause);
+                Constants.SCOREVIEW.setVisibility(View.GONE);
+                Constants.SCORETEXT.setVisibility(View.GONE);
+
+                Constants.INSTRUCTIONS.setText("FINAL SCORE: " + String.valueOf(score));
+                Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
+                Constants.HIGHSCORETEXT.setVisibility(View.VISIBLE);
+                Constants.HIGHSCORETEXT.setText("HIGH SCORE: " + Constants.HIGHSCORE);
+
+                Constants.RESTART.setVisibility(View.VISIBLE);
+                Constants.QUIT.setVisibility(View.VISIBLE);
+
+                if (score > Constants.HIGHSCORE) {
+                    Constants.EDITOR.putInt("HighScore", score);
+                    Constants.EDITOR.apply();
+                    Constants.HIGHSCORETEXT.setText("You have beaten your high score!");
+                }
+            }
         }
-
-        if(Gameover)
-        {
-            Constants.PAUSEVIEW.setText("GAME OVER");
-            Constants.PAUSEVIEW.setTextColor(Color.RED);
-            Constants.PAUSEVIEW.setTextSize(50);
-
-            Constants.SCOREVIEW.setVisibility(View.GONE);
-            Constants.SCORETEXT.setVisibility(View.GONE);
-
-            Constants.INSTRUCTIONS.setText("FINAL SCORE: " + String.valueOf(score));
-            Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
-            Constants.HIGHSCORETEXT.setVisibility(View.VISIBLE);
-            Constants.HIGHSCORETEXT.setText("HIGH SCORE: " + Constants.HIGHSCORE);
-
-            if(score > Constants.HIGHSCORE) {
-                Constants.EDITOR.putInt("HighScore", score);
-                Constants.EDITOR.apply();
-                Constants.HIGHSCORETEXT.setText("You have beaten your high score!");
-            }
-
-        }
-
         handler.postDelayed(r, 10);
+    }
+
+    public void reset() {
+        score = 0;
+        initObstacle();
+        initPlayer();
+        Gameover = false;
+        Pause = true;
+        Constants.PAUSEVIEW.setText("PAUSE");
+        Constants.PAUSEVIEW.setTextColor(Color.WHITE);
+        Constants.PAUSEVIEW.setVisibility(View.GONE);
+
+        Constants.SCOREVIEW.setVisibility(View.VISIBLE);
+        Constants.SCORETEXT.setVisibility(View.VISIBLE);
+
+        Constants.INSTRUCTIONS.setText("Put your finger on the character to unpause");
+        Constants.INSTRUCTIONS.setVisibility(View.GONE);
+        Constants.HIGHSCORETEXT.setVisibility(View.GONE);
+        Constants.HIGHSCORETEXT.setText("HIGH SCORE: " + Constants.HIGHSCORE);
+
+        Constants.RESTART.setVisibility(View.GONE);
+        Constants.QUIT.setVisibility(View.GONE);
+
+        Constants.SCOREVIEW.setText("0");
     }
 
     @Override

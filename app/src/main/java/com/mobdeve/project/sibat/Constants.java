@@ -1,6 +1,7 @@
 package com.mobdeve.project.sibat;
 
 import android.content.SharedPreferences;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class Constants {
@@ -14,5 +15,8 @@ public class Constants {
     public static SharedPreferences SP;
     public static int HIGHSCORE;
     public static TextView HIGHSCORETEXT;
+    public static Button RESTART;
+    public static Button QUIT;
+
 
 }

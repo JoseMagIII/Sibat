@@ -6,14 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
-
+    private Button restartBtn, quitBtn;
+    private GameView gameView;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +43,29 @@ public class MainActivity extends AppCompatActivity {
         Constants.SCORETEXT = (TextView) this.findViewById(R.id.score_tv);
         Constants.INSTRUCTIONS = (TextView) this.findViewById(R.id.instructions_tv);
         Constants.HIGHSCORETEXT = (TextView) this.findViewById(R.id.highscoretext_tv);
+        Constants.RESTART = (Button) this.findViewById(R.id.restart_btn);
+        Constants.QUIT = (Button) this.findViewById(R.id.quit_btn);
+        
+        restartBtn = this.findViewById(R.id.restart_btn);
+        gameView = this.findViewById(R.id.gameView);
+        quitBtn = this.findViewById(R.id.quit_btn);
 
+        restartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameView.reset();
+            }
+        });
+
+        quitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
+            }
+        });
     }
+
 
     @Override
     protected void onDestroy() {
