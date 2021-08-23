@@ -196,6 +196,11 @@ public class GameView extends View {
         Constants.QUIT.setVisibility(View.GONE);
 
         Constants.SCOREVIEW.setText("0");
+
+        speedCap1 = 5000;
+        speedCap2 = 10000;
+        speedCap3 = 20000;
+        speedCapMax = 50000;
     }
 
     @Override
