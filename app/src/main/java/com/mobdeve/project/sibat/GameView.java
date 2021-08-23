@@ -28,7 +28,7 @@ public class GameView extends View {
     private ArrayList<Obstacle> arrObstacle;
     private boolean Pause, Gameover;
     public static int score;
-    private int speedCap;
+    private int speedCap1, speedCap2, speedCap3, speedCapMax;
 
     float positions[]; //Array of possible positions
 
@@ -54,15 +54,20 @@ public class GameView extends View {
         scoreincrement = new Runnable() {
             @Override
             public void run() {
-                GameView.score += 10;
+                GameView.score += 1000;
                 Constants.SCOREVIEW.setText(String.valueOf(score));
             }
         };
 
         Pause = true;
         Gameover = false;
-        this.score = 0;
-        speedCap = 500;
+
+
+        speedCap1 = 5000;
+        speedCap2 = 10000;
+        speedCap3 = 20000;
+        speedCapMax = 50000;
+
     }
 
     private void initObstacle() {
@@ -120,9 +125,24 @@ public class GameView extends View {
                     handler2.postDelayed(scoreincrement, 100);
                 }
 
-                if (score > speedCap) {
+                if (score == speedCap1) {
                     arrObstacle.get(i - 1).speedUp();
-                    speedCap *= 2;
+                    speedCap1 = 0;
+                }
+
+                if (score == speedCap2) {
+                    arrObstacle.get(i - 1).speedUp();
+                    speedCap2 = 0;
+                }
+
+                if (score == speedCap3) {
+                    arrObstacle.get(i - 1).speedUp();
+                    speedCap3 = 0;
+                }
+
+                if (score == speedCapMax) {
+                    arrObstacle.get(i - 1).speedUp();
+                    speedCapMax = 0;
                 }
 
                 arrObstacle.get(i - 1).draw(canvas, Pause);
@@ -131,6 +151,7 @@ public class GameView extends View {
             if (Gameover) {
                 Constants.PAUSEVIEW.setText("GAME OVER");
                 Constants.PAUSEVIEW.setTextColor(Color.RED);
+                Constants.PAUSEVIEW.setVisibility(View.VISIBLE);
 
                 Constants.SCOREVIEW.setVisibility(View.GONE);
                 Constants.SCORETEXT.setVisibility(View.GONE);
@@ -163,8 +184,8 @@ public class GameView extends View {
         Constants.PAUSEVIEW.setTextColor(Color.WHITE);
         Constants.PAUSEVIEW.setVisibility(View.GONE);
 
-        Constants.SCOREVIEW.setVisibility(View.VISIBLE);
-        Constants.SCORETEXT.setVisibility(View.VISIBLE);
+        /*Constants.SCOREVIEW.setVisibility(View.VISIBLE);
+        Constants.SCORETEXT.setVisibility(View.VISIBLE);*/
 
         Constants.INSTRUCTIONS.setText("Put your finger on the character to unpause");
         Constants.INSTRUCTIONS.setVisibility(View.GONE);
@@ -190,8 +211,14 @@ public class GameView extends View {
                 if(player.getRect().contains((int)xPos, (int)yPos)) {
 
                     Pause = false;
-                    Constants.PAUSEVIEW.setVisibility(View.GONE);
-                    Constants.INSTRUCTIONS.setVisibility(View.GONE);
+
+                    Constants.INITIAL.setVisibility(View.GONE);
+                    Constants.SCOREVIEW.setVisibility(View.VISIBLE);
+                    Constants.SCORETEXT.setVisibility(View.VISIBLE);
+                    if(!Gameover) {
+                        Constants.PAUSEVIEW.setVisibility(View.GONE);
+                        Constants.INSTRUCTIONS.setVisibility(View.GONE);
+                    }
                 }
 
                 return true;
@@ -208,8 +235,10 @@ public class GameView extends View {
                 //Add logic to pause the game
                 Pause = true;
                 //Show pause screen
-                Constants.PAUSEVIEW.setVisibility(View.VISIBLE);
-                Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
+                if(Constants.INITIAL.getVisibility() == View.GONE) {
+                    Constants.PAUSEVIEW.setVisibility(View.VISIBLE);
+                    Constants.INSTRUCTIONS.setVisibility(View.VISIBLE);
+                }
                 break;
 
             default:

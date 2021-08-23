@@ -45,17 +45,24 @@ public class MainActivity extends AppCompatActivity {
         Constants.HIGHSCORETEXT = (TextView) this.findViewById(R.id.highscoretext_tv);
         Constants.RESTART = (Button) this.findViewById(R.id.restart_btn);
         Constants.QUIT = (Button) this.findViewById(R.id.quit_btn);
-        
+        Constants.INITIAL = (TextView) this.findViewById(R.id.initialScreen_tv);
+
         restartBtn = this.findViewById(R.id.restart_btn);
         gameView = this.findViewById(R.id.gameView);
         quitBtn = this.findViewById(R.id.quit_btn);
 
+
         restartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Constants.INITIAL.setVisibility(View.VISIBLE);
+                Constants.SCOREVIEW.setVisibility(View.GONE);
+                Constants.SCORETEXT.setVisibility(View.GONE);
                 gameView.reset();
             }
         });
+
 
         quitBtn.setOnClickListener(new View.OnClickListener() {
             @Override

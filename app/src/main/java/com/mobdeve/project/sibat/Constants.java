@@ -17,6 +17,8 @@ public class Constants {
     public static TextView HIGHSCORETEXT;
     public static Button RESTART;
     public static Button QUIT;
+    public static TextView INITIAL;
+    public static boolean START;
 
 
 }
