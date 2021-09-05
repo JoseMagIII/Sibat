@@ -240,6 +240,7 @@ public class GameView extends View {
                     Constants.EDITOR.putInt("HighScore", score);
                     Constants.EDITOR.apply();
                     Constants.HIGHSCORE = score;
+                    Constants.INSTRUCTIONS.setText("FINAL SCORE: " + score);
                     Constants.HIGHSCORETEXT.setText("You have beaten your high score!");
                 }
             }
