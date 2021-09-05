@@ -7,6 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -32,6 +36,16 @@ public class GameView extends View {
 
     float positions[]; //Array of possible positions
 
+
+    private int deadSound1;
+    private int deadSound2;
+    private int deadSound3;
+    private int deadSound4;
+
+    private float volume;
+    private boolean loadedSound;
+
+    private SoundPool soundPool;
 
     Random rand = new Random(); //Random variable to generate a random number from 0 - 3
 
@@ -67,6 +81,37 @@ public class GameView extends View {
         speedCap2 = 10000;
         speedCap3 = 20000;
         speedCapMax = 50000;
+
+
+        if(Build.VERSION.SDK_INT >= 21){
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            SoundPool.Builder builder = new SoundPool.Builder();
+            builder.setAudioAttributes(audioAttributes).setMaxStreams(5);
+            this.soundPool = builder.build();
+        }
+        else{
+            soundPool = new SoundPool(8, AudioManager.STREAM_MUSIC, 0);
+        }
+        this.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                loadedSound = true;
+            }
+        });
+
+        deadSound1 = this.soundPool.load(context, R.raw.bugoksi, 1);
+        deadSound2 = this.soundPool.load(context, R.raw.gagokaba, 1);
+        deadSound3 = this.soundPool.load(context, R.raw.olol, 1);
+        deadSound4 = this.soundPool.load(context, R.raw.pakyu, 1);
+
+        soundPool.setRate(deadSound1, (float)0.5);
+        soundPool.setRate(deadSound2, (float)0.5);
+        soundPool.setRate(deadSound3, (float)0.5);
+        soundPool.setRate(deadSound4, (float)0.5);
 
     }
 
@@ -116,8 +161,35 @@ public class GameView extends View {
             player.draw(canvas, Pause);
 
             for (int i = 1; i < numObstacles + 1; i++) {
-                if (player.getRect().intersect(arrObstacle.get(i - 1).getRect()))
+                if (player.getRect().intersect(arrObstacle.get(i - 1).getRect())) {
                     Gameover = true;
+
+                    if(loadedSound){
+                        int playSound = rand.nextInt(4);
+                        int streamId;
+                        System.out.println(deadSound2);
+                        switch(playSound)
+                        {
+                            case 0:
+                                streamId = this.soundPool.play(this.deadSound1, (float)2, (float)2, 1, 0, 1);
+                                break;
+
+                            case 1:
+                                streamId = this.soundPool.play(this.deadSound2, (float)2, (float)2, 1, 0, 1);
+                                break;
+
+                            case 2:
+                                streamId = this.soundPool.play(this.deadSound3, (float)2, (float)2, 1, 0, 1);
+                                break;
+
+                            case 3:
+                                streamId = this.soundPool.play(this.deadSound4, (float)2, (float)2, 1, 0, 1);
+                                break;
+                        }
+
+                    }
+
+                }
                 //Reset obstacle position
                 if (arrObstacle.get(i - 1).getY() > Constants.SCREEN_HEIGHT) {
                     arrObstacle.get(i - 1).setX(positions[rand.nextInt(4)]);
@@ -167,6 +239,7 @@ public class GameView extends View {
                 if (score > Constants.HIGHSCORE) {
                     Constants.EDITOR.putInt("HighScore", score);
                     Constants.EDITOR.apply();
+                    Constants.HIGHSCORE = score;
                     Constants.HIGHSCORETEXT.setText("You have beaten your high score!");
                 }
             }

@@ -3,6 +3,7 @@ package com.mobdeve.project.sibat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -17,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor spEditor;
     private Button restartBtn, quitBtn;
     private GameView gameView;
-    
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         gameView = this.findViewById(R.id.gameView);
         quitBtn = this.findViewById(R.id.quit_btn);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.bgmusic);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+        mediaPlayer.setVolume((float)0.05, (float)0.05);
 
         restartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +79,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.pause();
+    }
 
     @Override
     protected void onDestroy() {
