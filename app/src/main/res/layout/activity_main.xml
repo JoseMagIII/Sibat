@@ -22,6 +22,33 @@
     </com.mobdeve.project.sibat.GameView>
 
     <TextView
+        android:id="@+id/ChooseScreen_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Choose your Character"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06999999" />
+
+    <ImageButton
+        android:id="@+id/chara2_ib"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gameView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toEndOf="@+id/chara1_ib"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.159"
+        app:srcCompat="@drawable/bird1" />
+
+    <TextView
         android:id="@+id/pause_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,5 +149,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/chara1_ib"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gameView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16000003"
+        app:srcCompat="@drawable/tempchar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

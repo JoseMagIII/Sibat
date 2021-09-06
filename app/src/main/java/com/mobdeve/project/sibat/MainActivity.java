@@ -1,8 +1,11 @@
 package com.mobdeve.project.sibat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,12 +23,19 @@ public class MainActivity extends AppCompatActivity {
     private Button restartBtn, quitBtn;
     private GameView gameView;
     private MediaPlayer mediaPlayer;
+    private ImageButton chara1, chara2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        Constants.CHARAIMG = 1;
+
+
+
 
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -34,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Constants.SP = this.sp;
 
         Constants.HIGHSCORE = sp.getInt("HighScore", 0);
+
 
         DisplayMetrics dm = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -48,10 +60,16 @@ public class MainActivity extends AppCompatActivity {
         Constants.RESTART = (Button) this.findViewById(R.id.restart_btn);
         Constants.QUIT = (Button) this.findViewById(R.id.quit_btn);
         Constants.INITIAL = (TextView) this.findViewById(R.id.initialScreen_tv);
+        Constants.CHOOSE = (TextView) this.findViewById(R.id.ChooseScreen_tv);
+
+        Constants.CHARA1 = (ImageButton) this.findViewById(R.id.chara1_ib);
+        Constants.CHARA2 = (ImageButton) this.findViewById(R.id.chara2_ib);
 
         restartBtn = this.findViewById(R.id.restart_btn);
         gameView = this.findViewById(R.id.gameView);
         quitBtn = this.findViewById(R.id.quit_btn);
+
+
 
         mediaPlayer = MediaPlayer.create(this, R.raw.bgmusic);
         mediaPlayer.setLooping(true);
@@ -63,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Constants.INITIAL.setVisibility(View.VISIBLE);
+                Constants.CHOOSE.setVisibility(View.VISIBLE);
+                Constants.CHARA1.setVisibility(View.VISIBLE);
+                Constants.CHARA2.setVisibility(View.VISIBLE);
                 Constants.SCOREVIEW.setVisibility(View.GONE);
                 Constants.SCORETEXT.setVisibility(View.GONE);
                 gameView.reset();
@@ -75,6 +96,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
                 System.exit(0);
+            }
+        });
+
+        Constants.CHARA1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Constants.CHARAIMG = 1;
+                gameView.reset();
+            }
+        });
+
+        Constants.CHARA2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Constants.CHARAIMG = 2;
+                gameView.reset();
             }
         });
     }

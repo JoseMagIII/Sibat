@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -150,8 +151,20 @@ public class GameView extends View {
 
         //ADD PLAYER ANIMATIONS HERE
         ArrayList<Bitmap> animations = new ArrayList<>();
-        animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar));
-        animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar2));
+        switch(Constants.CHARAIMG){
+            case 1: {
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar2));
+
+            } break;
+            case 2: {
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.bird1));
+
+            } break;
+
+        }
+
+
         player.setArrBms(animations);
     }
 
@@ -292,6 +305,9 @@ public class GameView extends View {
                     Pause = false;
 
                     Constants.INITIAL.setVisibility(View.GONE);
+                    Constants.CHOOSE.setVisibility(View.GONE);
+                    Constants.CHARA1.setVisibility(View.GONE);
+                    Constants.CHARA2.setVisibility(View.GONE);
                     Constants.SCOREVIEW.setVisibility(View.VISIBLE);
                     Constants.SCORETEXT.setVisibility(View.VISIBLE);
                     if(!Gameover) {
