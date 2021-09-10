@@ -46,7 +46,8 @@
         app:layout_constraintStart_toEndOf="@+id/chara1_ib"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.159"
-        app:srcCompat="@drawable/bird1" />
+        app:srcCompat="@drawable/bird1"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/pause_tv"
@@ -160,6 +161,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16000003"
-        app:srcCompat="@drawable/tempchar" />
+        app:srcCompat="@drawable/tempchar"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -153,12 +153,14 @@ public class GameView extends View {
         ArrayList<Bitmap> animations = new ArrayList<>();
         switch(Constants.CHARAIMG){
             case 1: {
-                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar));
-                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempchar2));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.farmer1));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.farmer2));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.farmer3));
 
             } break;
             case 2: {
-                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.bird1));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.lumad1));
+                animations.add(BitmapFactory.decodeResource(this.getResources(), R.drawable.lumad2));
 
             } break;
 
