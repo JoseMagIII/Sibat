@@ -50,6 +50,18 @@ public class GameView extends View {
 
     Random rand = new Random(); //Random variable to generate a random number from 0 - 3
 
+    Integer[] obstacleImgs = {
+            R.drawable.duterte,
+            R.drawable.duque,
+            R.drawable.roque,
+            R.drawable.go,
+            R.drawable.bato,
+            R.drawable.sara,
+            R.drawable.parlade,
+            R.drawable.xi,
+            R.drawable.biden
+    };
+
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -132,7 +144,7 @@ public class GameView extends View {
         for(int i = 1; i < numObstacles+1; i++)
         {
             arrObstacle.add(new Obstacle(positions[rand.nextInt(4)], i*-500, Constants.SCREEN_WIDTH/4, Constants.SCREEN_WIDTH/4));
-            arrObstacle.get(i-1).setBm(BitmapFactory.decodeResource(this.getResources(), R.drawable.tempobstacle));
+            arrObstacle.get(i-1).setBm(BitmapFactory.decodeResource(this.getResources(), obstacleImgs[rand.nextInt(obstacleImgs.length)]));
         }
 
     }
