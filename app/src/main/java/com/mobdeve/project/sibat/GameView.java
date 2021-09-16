@@ -89,13 +89,14 @@ public class GameView extends View {
         Pause = true;
         Gameover = false;
 
-
+        // Speed cap determines the score the user has to attain for the game to go faster
         speedCap1 = 5000;
         speedCap2 = 10000;
         speedCap3 = 20000;
         speedCapMax = 50000;
 
 
+        // Initializes the soundpool
         if(Build.VERSION.SDK_INT >= 21){
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_GAME)
@@ -128,6 +129,9 @@ public class GameView extends View {
 
     }
 
+    /**
+     * Initializes the obstacles
+     */
     private void initObstacle() {
         numObstacles = 5;
         arrObstacle = new ArrayList<>();
@@ -149,6 +153,9 @@ public class GameView extends View {
 
     }
 
+    /**
+     * Initializes the players
+     */
     private void initPlayer() {
 
         player = new Player();
@@ -182,19 +189,26 @@ public class GameView extends View {
         player.setArrBms(animations);
     }
 
+    /**
+     * draws the entities on the canvas
+     *
+     * @param canvas canvas of the game
+     */
     public void draw(Canvas canvas){
         super.draw(canvas);
         if(!Gameover) {
             player.draw(canvas, Pause);
 
             for (int i = 1; i < numObstacles + 1; i++) {
+                //Checks if player rectangle intersects with an obstacle rectangle. Game ends when this happens.
                 if (player.getRect().intersect(arrObstacle.get(i - 1).getRect())) {
                     Gameover = true;
 
                     if(loadedSound){
                         int playSound = rand.nextInt(4);
                         int streamId;
-                        System.out.println(deadSound2);
+
+                        //Plays a random death sounds
                         switch(playSound)
                         {
                             case 0:
@@ -247,6 +261,7 @@ public class GameView extends View {
                 arrObstacle.get(i - 1).draw(canvas, Pause);
             }
 
+            //Shows game over screen
             if (Gameover) {
                 Constants.PAUSEVIEW.setText("GAME OVER");
                 Constants.PAUSEVIEW.setTextColor(Color.RED);
@@ -263,6 +278,7 @@ public class GameView extends View {
                 Constants.RESTART.setVisibility(View.VISIBLE);
                 Constants.QUIT.setVisibility(View.VISIBLE);
 
+                //Updates highscore if user has beaten their highscore
                 if (score > Constants.HIGHSCORE) {
                     Constants.EDITOR.putInt("HighScore", score);
                     Constants.EDITOR.apply();
@@ -272,9 +288,13 @@ public class GameView extends View {
                 }
             }
         }
+        //Calls runnable r which redraws the canvas
         handler.postDelayed(r, 10);
     }
 
+    /**
+     * Reinitializes the game so the game can start over again
+     */
     public void reset() {
         score = 0;
         initObstacle();
@@ -285,8 +305,6 @@ public class GameView extends View {
         Constants.PAUSEVIEW.setTextColor(Color.WHITE);
         Constants.PAUSEVIEW.setVisibility(View.GONE);
 
-        /*Constants.SCOREVIEW.setVisibility(View.VISIBLE);
-        Constants.SCORETEXT.setVisibility(View.VISIBLE);*/
 
         Constants.INSTRUCTIONS.setText("Put your finger on the character to unpause");
         Constants.INSTRUCTIONS.setVisibility(View.GONE);
@@ -304,6 +322,11 @@ public class GameView extends View {
         speedCapMax = 50000;
     }
 
+    /**
+     * Determines the onTouchEvents
+     * @param event event happening to the device
+     * @return true or false
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float xPos = event.getX();

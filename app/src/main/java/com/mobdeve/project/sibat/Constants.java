@@ -6,6 +6,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+/**
+ * This class contains the constants of the project
+ */
 public class Constants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;

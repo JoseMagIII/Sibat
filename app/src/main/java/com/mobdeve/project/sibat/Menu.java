@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Main menu when user first starts the game
+ */
 public class Menu extends AppCompatActivity {
 
     private Button playBtn, quitBtn2;

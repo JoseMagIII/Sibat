@@ -120,18 +120,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Resumes the music of the game
+     */
     @Override
     protected void onResume() {
         super.onResume();
         mediaPlayer.start();
     }
 
+    /**
+     * Pauses the music of the game
+     */
     @Override
     protected void onPause() {
         super.onPause();
         mediaPlayer.pause();
     }
 
+    /**
+     * Saves shared preferences
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

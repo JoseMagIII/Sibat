@@ -12,22 +12,39 @@ public class Player extends BaseObject {
 
     private int count, vFlap, idCurrBitmap;
 
+    /**
+     * Constructor for player
+     */
     public Player(){
         this.count = 0;
         this.vFlap = 5;
         this.idCurrBitmap = 0;
     }
 
+    /**
+     * Draws the player on the canvas
+     * @param canvas canvas where player is drawn
+     * @param Pause state of the game
+     */
     public void draw(Canvas canvas, boolean Pause){
 
 
         canvas.drawBitmap(this.getBm(Pause), this.x, this.y, null);
     }
 
+
+    /**
+     *
+     * @return the bitmaps of the player
+     */
     public ArrayList<Bitmap> getArrBms() {
         return arrBms;
     }
 
+    /**
+     * Sets the bitmaps of the player
+     * @param arrBms the bitmap to be set
+     */
     public void setArrBms(ArrayList<Bitmap> arrBms) {
         this.arrBms = arrBms;
 
@@ -36,6 +53,11 @@ public class Player extends BaseObject {
         }
     }
 
+    /**
+     * Returns the current bitmap of the player
+     * @param Pause State of the game
+     * @return the bitmap of the player
+     */
     public Bitmap getBm(boolean Pause) {
 
         if(!Pause)
@@ -59,6 +81,10 @@ public class Player extends BaseObject {
         return this.getArrBms().get(idCurrBitmap);
     }
 
+    /**
+     *
+     * @param y new y coordinate of the object
+     */
     @Override
     public void setY(float y) {
 
@@ -66,6 +92,10 @@ public class Player extends BaseObject {
         this.y = y;
     }
 
+    /**
+     *
+     * @param x new x coordinate of the object
+     */
     @Override
     public void setX(float x) {
 
